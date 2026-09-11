@@ -31,10 +31,15 @@ npm install -g @openai/codex
 
 ## Onde colocar o arquivo
 
-| Sistema | Destino                                  |
-|---------|------------------------------------------|
-| macOS   | `~/.codex/config.toml`                   |
-| Windows | `C:\Users\<voce>\.codex\config.toml`     |
+Todos os arquivos `.toml` deste repo vão para a MESMA pasta `.codex`:
+
+| Sistema | Pasta de destino          | Arquivos                                                |
+|---------|---------------------------|---------------------------------------------------------|
+| macOS   | `~/.codex/`               | `config.toml`, `opus.config.toml`, `grok.config.toml`   |
+| Windows | `C:\Users\<voce>\.codex\` | `config.toml`, `opus.config.toml`, `grok.config.toml`   |
+
+- `config.toml`: obrigatório. Aponta o Codex para o proxy e define GPT-5.6 Sol como padrão.
+- `opus.config.toml` e `grok.config.toml`: opcionais. Perfis para Claude Opus 5 e Grok 4.6 (veja a seção mais abaixo).
 
 A pasta `.codex` é criada na primeira vez que você roda o Codex. Se ainda não existir, crie.
 
@@ -43,7 +48,7 @@ A pasta `.codex` é criada na primeira vez que você roda o Codex. Se ainda não
 ```bash
 git clone https://github.com/leanrails-inc/codex-cliproxy.git ~/Downloads/codex-cliproxy
 mkdir -p ~/.codex
-cp ~/Downloads/codex-cliproxy/config.toml ~/.codex/config.toml
+cp ~/Downloads/codex-cliproxy/*.toml ~/.codex/
 ```
 
 ### Windows (PowerShell)
@@ -51,7 +56,7 @@ cp ~/Downloads/codex-cliproxy/config.toml ~/.codex/config.toml
 ```powershell
 git clone https://github.com/leanrails-inc/codex-cliproxy.git "$env:USERPROFILE\Downloads\codex-cliproxy"
 New-Item -ItemType Directory -Force "$env:USERPROFILE\.codex" | Out-Null
-Copy-Item "$env:USERPROFILE\Downloads\codex-cliproxy\config.toml" "$env:USERPROFILE\.codex\config.toml"
+Copy-Item "$env:USERPROFILE\Downloads\codex-cliproxy\*.toml" "$env:USERPROFILE\.codex\"
 ```
 
 Sem git? Baixe o `config.toml` direto pelo GitHub (botão Download) e copie para o destino acima.
