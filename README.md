@@ -79,6 +79,45 @@ Saída esperada: `CLIPROXY OK`.
 
 Para confirmar que o app desktop está usando o proxy, abra o arquivo mais recente em `~/.codex/sessions/` e verifique se a primeira linha contém `"model_provider":"cliproxyapi"`.
 
+## Usar Claude Opus 5 e Grok 4.6 no Codex
+
+O proxy também serve `claude-opus-5` e `grok-4.6`, e o Codex consegue usá-los. Este repo traz dois perfis prontos:
+
+| Arquivo             | Modelo          |
+|---------------------|-----------------|
+| `opus.config.toml`  | `claude-opus-5` |
+| `grok.config.toml`  | `grok-4.6`      |
+
+Copie os dois para a mesma pasta `.codex` (ao lado do `config.toml`):
+
+```bash
+# macOS
+cp ~/Downloads/codex-cliproxy/opus.config.toml ~/Downloads/codex-cliproxy/grok.config.toml ~/.codex/
+```
+
+```powershell
+# Windows
+Copy-Item "$env:USERPROFILE\Downloads\codex-cliproxy\opus.config.toml","$env:USERPROFILE\Downloads\codex-cliproxy\grok.config.toml" "$env:USERPROFILE\.codex\"
+```
+
+### No terminal (CLI)
+
+```bash
+codex --profile opus        # Claude Opus 5
+codex --profile grok        # Grok 4.6
+codex -m claude-opus-5      # alternativa sem perfil
+```
+
+### No app desktop
+
+O seletor de modelos do app só mostra modelos oficiais da OpenAI. É um filtro do próprio app, não dá para contornar por configuração. Para usar Opus ou Grok no app:
+
+1. Abra `~/.codex/config.toml` e troque a linha `model =` por `model = "claude-opus-5"` (ou `"grok-4.6"`).
+2. Abra uma thread NOVA no app. O seletor vai mostrar "Custom", mas as requisições vão para o modelo escolhido.
+3. Para voltar aos GPT, troque a linha `model =` de volta e abra outra thread nova.
+
+Se você usa Opus ou Grok com frequência, o terminal com `--profile` é o caminho mais prático.
+
 ## Observações
 
 - O Codex pode avisar que não conseguiu carregar o catálogo de plugins do ChatGPT. É inofensivo.
