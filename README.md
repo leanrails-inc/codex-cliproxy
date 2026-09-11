@@ -35,10 +35,11 @@ Todos os arquivos `.toml` deste repo vão para a MESMA pasta `.codex`:
 
 | Sistema | Pasta de destino          | Arquivos                                                |
 |---------|---------------------------|---------------------------------------------------------|
-| macOS   | `~/.codex/`               | `config.toml`, `opus.config.toml`, `grok.config.toml`   |
-| Windows | `C:\Users\<voce>\.codex\` | `config.toml`, `opus.config.toml`, `grok.config.toml`   |
+| macOS   | `~/.codex/`               | `config.toml`, `cliproxy-models.json`, `opus.config.toml`, `grok.config.toml` |
+| Windows | `C:\Users\<voce>\.codex\` | `config.toml`, `cliproxy-models.json`, `opus.config.toml`, `grok.config.toml` |
 
 - `config.toml`: obrigatório. Aponta o Codex para o proxy e define GPT-5.6 Sol como padrão.
+- `cliproxy-models.json`: catálogo de modelos do proxy. Faz o seletor do app mostrar Claude, Gemini e Grok além dos GPT.
 - `opus.config.toml` e `grok.config.toml`: opcionais. Perfis para Claude Opus 5 e Grok 4.6 (veja a seção mais abaixo).
 
 A pasta `.codex` é criada na primeira vez que você roda o Codex. Se ainda não existir, crie.
@@ -48,7 +49,8 @@ A pasta `.codex` é criada na primeira vez que você roda o Codex. Se ainda não
 ```bash
 git clone https://github.com/leanrails-inc/codex-cliproxy.git ~/Downloads/codex-cliproxy
 mkdir -p ~/.codex
-cp ~/Downloads/codex-cliproxy/*.toml ~/.codex/
+cp ~/Downloads/codex-cliproxy/*.toml ~/Downloads/codex-cliproxy/cliproxy-models.json ~/.codex/
+echo "model_catalog_json = \"$HOME/.codex/cliproxy-models.json\"" >> ~/.codex/config.toml
 ```
 
 ### Windows (PowerShell)
@@ -56,8 +58,11 @@ cp ~/Downloads/codex-cliproxy/*.toml ~/.codex/
 ```powershell
 git clone https://github.com/leanrails-inc/codex-cliproxy.git "$env:USERPROFILE\Downloads\codex-cliproxy"
 New-Item -ItemType Directory -Force "$env:USERPROFILE\.codex" | Out-Null
-Copy-Item "$env:USERPROFILE\Downloads\codex-cliproxy\*.toml" "$env:USERPROFILE\.codex\"
+Copy-Item "$env:USERPROFILE\Downloads\codex-cliproxy\*.toml","$env:USERPROFILE\Downloads\codex-cliproxy\cliproxy-models.json" "$env:USERPROFILE\.codex\"
+Add-Content "$env:USERPROFILE\.codex\config.toml" "model_catalog_json = '$env:USERPROFILE\.codex\cliproxy-models.json'"
 ```
+
+A segunda linha grava o caminho completo do catálogo no `config.toml`. O Codex exige caminho absoluto aí, por isso não vem pronto no arquivo.
 
 Sem git? Baixe o `config.toml` direto pelo GitHub (botão Download) e copie para o destino acima.
 
@@ -67,6 +72,7 @@ Não sobrescreva. Abra o `~/.codex/config.toml` e:
 
 1. Adicione `model_provider = "cliproxyapi"` no topo, logo abaixo da linha `model = ...`.
 2. Cole o bloco inteiro `[model_providers.cliproxyapi]` do `config.toml` deste repo no final do arquivo.
+3. Copie o `cliproxy-models.json` para a pasta `.codex` e rode a linha `echo`/`Add-Content` da seção acima para registrar o caminho.
 
 ## Depois de copiar
 
@@ -115,16 +121,27 @@ codex -m claude-opus-5      # alternativa sem perfil
 
 ### No app desktop
 
-O seletor de modelos do app só mostra modelos oficiais da OpenAI. É um filtro do próprio app, não dá para contornar por configuração. Para usar Opus ou Grok no app:
+Com o `cliproxy-models.json` registrado no `config.toml`, o seletor de modelos do app passa a listar todos os modelos do proxy: GPT, Claude (incluindo Opus 5), Gemini e Grok (incluindo 4.6). Basta escolher no seletor, como qualquer outro modelo.
 
-1. Abra `~/.codex/config.toml` e troque a linha `model =` por `model = "claude-opus-5"` (ou `"grok-4.6"`).
-2. Abra uma thread NOVA no app. O seletor vai mostrar "Custom", mas as requisições vão para o modelo escolhido.
-3. Para voltar aos GPT, troque a linha `model =` de volta e abra outra thread nova.
+Sem o catálogo, o app mostra só os GPT. Isso é um filtro do próprio app, que só some quando existe um catálogo local configurado.
 
-Se você usa Opus ou Grok com frequência, o terminal com `--profile` é o caminho mais prático.
+Depois de copiar o catálogo, feche o app por completo e abra de novo.
+
+### Atualizar o catálogo
+
+Quando o proxy ganhar modelos novos, baixe o catálogo de novo:
+
+```bash
+# macOS
+curl -sS -A "codex_cli_rs/0.153.4" -H "originator: codex_cli_rs" "https://cli-proxy.cartpandatools.com/v1/models" -o ~/.codex/cliproxy-models.json
+```
+
+```powershell
+# Windows
+curl.exe -sS -A "codex_cli_rs/0.153.4" -H "originator: codex_cli_rs" "https://cli-proxy.cartpandatools.com/v1/models" -o "$env:USERPROFILE\.codex\cliproxy-models.json"
+```
 
 ## Observações
 
 - O Codex pode avisar que não conseguiu carregar o catálogo de plugins do ChatGPT. É inofensivo.
 - Para trocar o modelo padrão, edite a linha `model =`. Modelos GPT disponíveis: gpt-6-astra, gpt-5.6-sol, gpt-5.6-terra, gpt-5.6-luna, gpt-5.5, gpt-5.3-codex-spark.
-- Modelos Claude, Gemini e Grok do proxy não aparecem no Codex. Para eles use o pi com a extensão `cartpanda-cliproxy`.
