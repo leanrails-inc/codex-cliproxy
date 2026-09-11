@@ -4,6 +4,25 @@ Configuração para usar o Codex (app desktop e CLI) através do CLIProxyAPI da 
 
 É um único arquivo. Não precisa de extensão nem de API key.
 
+## Baixar o Codex
+
+| Sistema | Download |
+|---------|----------|
+| macOS (Apple Silicon) | [Codex.dmg](https://persistent.oaistatic.com/codex-app-prod/Codex.dmg) |
+| Windows (recomendado) | [Microsoft Store](https://apps.microsoft.com/detail/9PLM9XGG6VKS) |
+| Windows x64 (instalador direto) | [ChatGPT-x64.msix](https://persistent.oaistatic.com/codex-app-prod/ChatGPT-x64.msix) |
+| Windows Arm64 (instalador direto) | [ChatGPT-arm64.msix](https://persistent.oaistatic.com/codex-app-prod/ChatGPT-arm64.msix) |
+
+Página oficial: https://learn.chatgpt.com/docs/app
+
+No macOS, abra o `.dmg` e arraste o Codex para a pasta Aplicativos. No Windows, a versão da Microsoft Store atualiza sozinha; o `.msix` é para quem não consegue usar a Store.
+
+Só quer o CLI? Com Node instalado:
+
+```bash
+npm install -g @openai/codex
+```
+
 ## Requisitos
 
 - Codex instalado (app desktop ou CLI).
