@@ -1,0 +1,12 @@
+# Codex -> CartPanda CLIProxyAPI (VPS, Tailnet, keyless)
+model = "gpt-5.6-sol"
+model_provider = "cliproxyapi"
+model_reasoning_effort = "high"
+
+[model_providers.cliproxyapi]
+name = "OpenAI"
+base_url = "https://cli-proxy.cartpandatools.com/v1"
+experimental_bearer_token = "sk-dummy"
+wire_api = "responses"
+requires_openai_auth = true
+supports_websockets = true
