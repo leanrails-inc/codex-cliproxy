@@ -129,19 +129,19 @@ Depois de copiar o catálogo, feche o app por completo e abra de novo.
 
 ### Atualizar o catálogo
 
-Quando o proxy ganhar modelos novos, baixe o catálogo de novo:
+Quando o proxy ganhar modelos novos, baixe o catálogo de novo. O parâmetro `client_version` é obrigatório: sem ele o proxy devolve só a lista simples de IDs, que o Codex não consegue usar como catálogo.
 
 ```bash
 # macOS
-curl -sS -A "codex_cli_rs/0.153.4" -H "originator: codex_cli_rs" "https://cli-proxy.cartpandatools.com/v1/models" -o ~/.codex/cliproxy-models.json
+curl -sS -A "codex_cli_rs/0.153.4" -H "originator: codex_cli_rs" "https://cli-proxy.cartpandatools.com/v1/models?client_version=0.153.4" -o ~/.codex/cliproxy-models.json
 ```
 
 ```powershell
 # Windows
-curl.exe -sS -A "codex_cli_rs/0.153.4" -H "originator: codex_cli_rs" "https://cli-proxy.cartpandatools.com/v1/models" -o "$env:USERPROFILE\.codex\cliproxy-models.json"
+curl.exe -sS -A "codex_cli_rs/0.153.4" -H "originator: codex_cli_rs" "https://cli-proxy.cartpandatools.com/v1/models?client_version=0.153.4" -o "$env:USERPROFILE\.codex\cliproxy-models.json"
 ```
 
 ## Observações
 
 - O Codex pode avisar que não conseguiu carregar o catálogo de plugins do ChatGPT. É inofensivo.
-- Para trocar o modelo padrão, edite a linha `model =`. Modelos GPT disponíveis: gpt-6-astra, gpt-5.6-sol, gpt-5.6-terra, gpt-5.6-luna, gpt-5.5, gpt-5.3-codex-spark.
+- Para trocar o modelo padrão, edite a linha `model =`. Modelos GPT disponíveis: gpt-6.1-sol, gpt-6-astra, gpt-6-sol, gpt-6-luna, gpt-5.6-sol, gpt-5.6-terra, gpt-5.6-luna, gpt-5.5.
